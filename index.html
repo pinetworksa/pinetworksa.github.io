@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pi Payment Test</title>
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body>
+    <h1>Test Pi Payment</h1>
+    <button onclick="pay()">Pay Test</button>
+
+    <script>
+        const paymentData = {
+            amount: 0.001,
+            memo: "Test Transaction",
+            metadata: { "orderId": "12345" }
+        };
+
+        async function pay() {
+            Pi.init({
+                version: "2.0",
+                sandbox: true
+            });
+
+            const payment = await Pi.createPayment(paymentData);
+            payment.approve();
+        }
+    </script>
+</body>
+</html>
