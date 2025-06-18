@@ -7,23 +7,31 @@
 </head>
 <body>
     <h1>Test Pi Payment</h1>
-    <button onclick="pay()">Pay Test</button>
+    <button onclick="start()">Pay Test</button>
 
     <script>
-        const paymentData = {
-            amount: 0.001,
-            memo: "Test Transaction",
-            metadata: { "orderId": "12345" }
-        };
-
-        async function pay() {
+        async function start() {
             Pi.init({
                 version: "2.0",
                 sandbox: true
             });
 
-            const payment = await Pi.createPayment(paymentData);
-            payment.approve();
+            try {
+                await Pi.authenticate(["payments"]);
+
+                const paymentData = {
+                    amount: 0.001,
+                    memo: "Test Transaction",
+                    metadata: { "orderId": "12345" }
+                };
+
+                const payment = await Pi.createPayment(paymentData);
+                payment.approve();
+
+            } catch (error) {
+                alert("Error: " + error);
+                console.error(error);
+            }
         }
     </script>
 </body>
