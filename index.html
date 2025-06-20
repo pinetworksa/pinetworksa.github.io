@@ -2,23 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pi Payment (Test)</title>
+    <title>Pi Payment Debug</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
 <body>
-    <h1>Test Pi Payment</h1>
+    <h1>Test Pi Payment (Debug Mode)</h1>
+    <div id="log"></div>
     <button onclick="start()">Pay Test</button>
 
     <script>
+        function log(message) {
+            document.getElementById("log").innerHTML += message + "<br>";
+        }
+
         async function start() {
-            Pi.init({
-                version: "2.0",
-                sandbox: true
-            });
-
             try {
-                await Pi.authenticate(["payments"]);
+                log("Step 1: Init started");
+                Pi.init({
+                    version: "2.0",
+                    sandbox: true
+                });
+                log("Step 1 done");
 
+                log("Step 2: Authenticate...");
+                const user = await Pi.authenticate(["payments"]);
+                log("Step 2 done - User: " + JSON.stringify(user));
+
+                log("Step 3: Creating payment...");
                 const paymentData = {
                     amount: 0.001,
                     memo: "Test Transaction",
@@ -26,10 +36,14 @@
                 };
 
                 const payment = await Pi.createPayment(paymentData);
+                log("Step 3 done: Payment created");
+
+                log("Step 4: Approving payment...");
                 payment.approve();
+                log("Step 4 done: Payment approved");
 
             } catch (error) {
-                alert("Error: " + error);
+                log("❌ Error: " + error);
                 console.error(error);
             }
         }
