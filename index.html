@@ -18,17 +18,24 @@
         async function start() {
             try {
                 log("Step 1: Init started");
+                console.log("Step 1: Init started")
                 Pi.init({
                     version: "2.0",
                     sandbox: true
                 });
                 log("Step 1 done");
+                console.log("Step 1 done")
 
                 log("Step 2: Authenticate...");
+                console.log("Step 2: Authenticate...")
+
                 const user = await Pi.authenticate(["payments"]);
                 log("Step 2 done - User: " + JSON.stringify(user));
+                console.log("Step 2 done - User: " + JSON.stringify(user))
 
                 log("Step 3: Creating payment...");
+                console.log("Step 3: Creating payment...")
+
                 const paymentData = {
                     amount: 0.001,
                     memo: "Test Transaction",
@@ -37,10 +44,13 @@
 
                 const payment = await Pi.createPayment(paymentData);
                 log("Step 3 done: Payment created");
+                console.log("Step 3 done: Payment created")
 
                 log("Step 4: Approving payment...");
+                console.log("Step 4: Approving payment...");
                 payment.approve();
                 log("Step 4 done: Payment approved");
+                console.log("Step 4 done: Payment approved");
 
             } catch (error) {
                 log("❌ Error: " + error);
